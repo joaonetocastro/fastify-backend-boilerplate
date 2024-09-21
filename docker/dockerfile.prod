@@ -1,0 +1,14 @@
+FROM node:lts-alpine
+
+ARG SERVICE_ACCOUNT_CONTENT
+ENV SERVICE_ACCOUNT_CONTENT=$SERVICE_ACCOUNT_CONTENT
+WORKDIR /app
+COPY package.json yarn.lock tsconfig.json docker/entrypoint.sh ./
+# RUN echo "$SERVICE_ACCOUNT_CONTENT" >> service-account.json
+COPY service-account.json ./
+COPY src/ ./src
+COPY prisma/ ./prisma
+RUN yarn
+EXPOSE 3002
+HEALTHCHECK --interval=10s --timeout=10s --start-period=30s --retries=3 CMD curl -f http://localhost:3002/healthcheck || exit 1
+ENTRYPOINT [ "./entrypoint.sh" ]

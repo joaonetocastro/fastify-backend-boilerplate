@@ -1,0 +1,7 @@
+FROM node:lts-alpine as DEV
+
+WORKDIR /app
+COPY ./ ./
+EXPOSE 3002
+HEALTHCHECK --interval=10s --timeout=10s --start-period=30s --retries=3 CMD curl -f http://localhost:3002/healthcheck || exit 1
+ENTRYPOINT [ "./docker/entrypoint.sh" ]

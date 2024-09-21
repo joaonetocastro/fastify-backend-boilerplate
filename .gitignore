@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+coverage
+.env.test
+service-account.json
+.sentryclirc
+.log
